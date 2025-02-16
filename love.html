@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>浪漫星空</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a2e;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+            font-family: '楷体', cursive;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+        }
+
+        h1 {
+            color: #ff69b4;
+            font-size: 3em;
+            text-shadow: 0 0 10px #ff1493;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .love-letter {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            color: #fff;
+            max-width: 500px;
+            margin: 0 auto;
+            backdrop-filter: blur(5px);
+            display: none;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff1493;
+            animation: fall linear forwards;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        button {
+            background: #ff1493;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #ff69b4;
+        }
+         /* 新增花瓣样式 */
+        .petal {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(45deg, #ffb6c1, #ff69b4);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            animation: petalFall linear forwards;
+            opacity: 0.8;
+            transform-origin: center;
+        }
+
+        @keyframes petalFall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg) scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* 花瓣飘动效果 */
+        @keyframes petalFloat {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(30px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❤️ 我永远爱你 ❤️</h1>
+        <button onclick="showLetter()">打开情书</button>
+        <div class="love-letter">
+            <p>亲爱的，</p>
+            <p>在万千星辰中，你是我眼中最亮的那一颗。</p>
+            <p>时光流转，爱你不止此刻，更在朝朝暮暮。</p>
+            <p>愿执子之手，与子偕老。</p>
+            <p style="text-align: right;">永远爱你的我</p>
+        </div>
+    </div>
+
+    <script>
+        // 创建星空
+        function createStars() {
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 1.5 + 's';
+                document.body.appendChild(star);
+            }
+        }
+
+        // 创建飘落爱心
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'heart';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+                
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 300);
+        }
+
+        function showLetter() {
+            document.querySelector('.love-letter').style.display = 'block';
+            document.querySelector('button').style.display = 'none';
+        }
+        // 新增花瓣生成函数
+        function createPetals() {
+            const colors = ['#ffb6c1', '#ff69b4', '#ff1493', '#fff0f5'];
+            const shapes = [
+                'polygon(50% 0%, 80% 10%, 100% 35%, 80% 60%, 50% 100%, 20% 60%, 0% 35%, 20% 10%)',
+                'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
+                'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)'
+            ];
+
+            setInterval(() => {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                
+                // 随机属性设置
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.animationDuration = Math.random() * 3 + 5 + 's';
+                petal.style.background = `linear-gradient(45deg, ${colors[Math.floor(Math.random()*colors.length)]}, ${colors[Math.floor(Math.random()*colors.length)]})`;
+                petal.style.clipPath = shapes[Math.floor(Math.random()*shapes.length)];
+                petal.style.animation = `petalFall ${Math.random()*3+5}s linear infinite, petalFloat ${Math.random()*2+3}s ease-in-out infinite`;
+                
+                document.body.appendChild(petal);
+
+                setTimeout(() => petal.remove(), 8000);
+            }, 200);
+        }
+
+
+        // 初始化
+        window.onload = () => {
+            createStars();
+            createHearts();
+             createPetals(); // 新增花瓣初始化
+
+            
+            // 添加鼠标爱心轨迹
+            document.addEventListener('mousemove', (e) => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.left = e.pageX + 'px';
+                heart.style.top = e.pageY + 'px';
+                heart.style.color = '#ff1493';
+                heart.style.transition = 'all 0.5s';
+                heart.style.opacity = '0.7';
+                
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.style.opacity = '0';
+                    heart.style.transform = 'scale(2)';
+                    setTimeout(() => heart.remove(), 500);
+                }, 100);
+            });
+        }
+    </script>
+</body>
+</html>
